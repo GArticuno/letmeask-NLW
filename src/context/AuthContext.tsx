@@ -1,4 +1,5 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import { firebase, auth } from '../services/firebase';
 
@@ -68,6 +69,10 @@ export function AuthContextProvider ({children}: Props){
   return(
     <AuthContext.Provider value={{user, signInWithGoogle}}>
       {children}
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </AuthContext.Provider>
   )
 }
