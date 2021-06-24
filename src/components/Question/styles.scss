@@ -1,0 +1,65 @@
+.question {
+  background: #fefefe;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem;
+  
+  & + .question {
+    margin-top: .5rem;
+  }
+  
+  p {
+    color: var(--text-default);
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+
+      span {
+        margin-left: .5rem;
+        color: var(--gray);
+        font-size: .875rem;
+      }
+    }
+
+    button {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      gap: .5rem;
+
+      &.like-button, &.delete-button {
+        display: flex;
+        align-items: flex-end;
+        color: var(--gray);
+        gap: .5rem;
+        transition: color 0.2s, filter 0.2s;
+
+        &.liked {
+          color: var(--secondary);
+        }
+
+        &.delete-button:hover {
+          color: var(--primary);
+        }
+
+        &:hover {
+          filter: brightness(0.8);
+        }
+      }
+    }
+  }
+}

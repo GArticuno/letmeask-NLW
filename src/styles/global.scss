@@ -1,3 +1,18 @@
+:root {
+  --background: #f8f8f8;
+  --text-default: #29292e;
+  --primary: #f02e3e;
+  --secondary: #ff6cf3;
+  --tertiary: #3dd817;
+  
+  --text: #fff;
+  --gray: #737380;
+  --gray-line: #a8a8b3;
+
+  --danger: #E73F5D;
+  
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,12 +20,17 @@
 }
 
 body {
-  background: #f8f8f8;
-  color: #29292e
+  background: var(--background);
+  color: var(--text-default);
 }
 
 body, input, button, textarea {
   font: 400 1rem 'Roboto', sans-serif;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 @media(max-width: 1400px){

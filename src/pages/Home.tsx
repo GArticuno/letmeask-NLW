@@ -1,5 +1,6 @@
 import {FormEvent, useState} from 'react';
 import { useHistory } from 'react-router-dom';
+import { FiLogIn } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 import illustration from '../assets/images/illustration.svg';
@@ -43,7 +44,12 @@ export default function Home(){
       return;
     }
 
-    history.push(`/rooms/${roomCode}`)
+    if(roomRef.val().closedAt){
+      toast.error('Sala já fechada.');
+      return;
+    }
+
+    history.push(`/rooms/${roomCode}`);
   }
 
   return(
@@ -71,6 +77,7 @@ export default function Home(){
               value={roomCode}
             />
             <Button type='submit'>
+              <FiLogIn className='icon login-icon'/>
               Entrar na sala
             </Button>
           </form>

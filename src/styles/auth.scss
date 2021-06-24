@@ -6,14 +6,18 @@
   aside {
     flex: 7;
 
-    background: #835afd;
-    color: #fff;
+    background: var(--primary);
+    color: var(--text);
 
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     padding: 7.5rem 5rem;
+
+    &::after {
+      background: linear-gradient(var(--primary), var(--secondary));
+    }
 
     img {
       max-width: 20rem;
@@ -67,11 +71,15 @@
           border-radius: 8px;
           padding: 0 1rem;
           background: #fff;
-          border: 1px solid #a8a8b3;
+          border: 1px solid var(--gray-line);
         }
 
         button {
           margin-top:  1rem;
+
+          .login-icon {
+            margin-right: .5rem;
+          }
         }
 
         input, button {
@@ -81,11 +89,11 @@
 
       p {
         font-size: 0.8rem;
-        color: #737380;
+        color: var(--gray);
         margin-top: 1rem;
 
         a {
-          color: #e559f9;
+          color: var(--secondary);
         }
       }
     }
@@ -96,24 +104,26 @@
     height: 50px;
     border-radius: 8px;
     font-weight: 500;
-    background: #ea4335;
-    color: #fff;
+    background: #fff;
+    color: #000;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     cursor: pointer;
-    border: 0;
+    border: 2px solid #e6e6e6;
 
     transition: filter 0.2s;
 
     img {
+      width: 1.5rem;
+      height: 1.5rem;
       margin-right: 0.5rem;
     }
 
     &:not(:disabled):hover {
-      filter: brightness(0.9);
+      filter: brightness(0.95);
     }
 
     &:disabled {
@@ -124,7 +134,7 @@
 
   .separator {
     font-size: 0.8rem;
-    color: #a8a8b3;
+    color: var(--gray-line);
 
     margin: 2rem 0;
     display: flex;
@@ -134,7 +144,7 @@
       content:'';
       flex: 1;
       height: 1px;
-      background:#a8a8b3;
+      background:var(--gray-line);
       margin-right: 1rem;
     }
 
@@ -142,7 +152,7 @@
       content:'';
       flex: 1;
       height: 1px;
-      background:#a8a8b3;
+      background:var(--gray-line);
       margin-left: 1rem;
     }
   }
