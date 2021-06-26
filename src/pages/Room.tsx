@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {AiOutlineLike, AiFillLike} from 'react-icons/ai';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import {AiOutlineLike, AiFillLike, AiOutlineShareAlt} from 'react-icons/ai';
+import { GrUserAdmin } from 'react-icons/gr';
 import toast from 'react-hot-toast';
 
 import logo from '../assets/images/logo.svg';
@@ -11,8 +12,9 @@ import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
 
 import { Button } from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
+import { EmptyQuestion } from '../components/EmptyQuestion';
 import { Question } from '../components/Question';
+import { RoomCode } from '../components/RoomCode';
 
 import '../styles/room.scss';
 
@@ -22,11 +24,19 @@ type RoomParams = {
 
 export default function Room(){
   const params = useParams<RoomParams>();
-  const roomId = params.id;
+  const roomId = params.id;  
+  const history = useHistory();
   const [newQuestion, setNewQuestion] = useState('');
 
   const { user } = useAuth();
-  const { questions, title } = useRoom(roomId);
+  const { 
+    closedAt, 
+    questions, 
+    title, 
+    authorId, 
+    closeDate, 
+    description, 
+  } = useRoom(roomId);
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -65,6 +75,15 @@ export default function Room(){
       })
     }
   }
+
+  function pushToAdminRoom(){
+    history.push(`/admin/rooms/${roomId}`)
+  }
+
+  function copyUrlRoomToClipboard() {
+    navigator.clipboard.writeText(window.location.href);
+    toast.success('URL da sala copiada!')
+  }
   
   return(
     <div id='page-room'>
@@ -73,20 +92,49 @@ export default function Room(){
           <Link to='/'>
             <img src={logo} alt="Letmeask" title='Home' id='logo-room'/>
           </Link>
-          <RoomCode code={roomId}/>
+          <div>
+            {user?.id === authorId && (
+              <button 
+                className='admin-button'
+                aria-label='Sala do Admin'
+                title='Sala de administração'
+                onClick={pushToAdminRoom}
+              >
+                <GrUserAdmin className='icon'/>
+              </button>              
+            )}
+            <RoomCode code={roomId}/>
+          </div>  
         </div>
       </header>
       
       <main className='content'>
         <div className='room-title'>
-          <h1>Sala {title}</h1>
-          {questions.length !== 0 && <span>{questions.length} pergunta(s)</span>}
-        </div>    
+          <div>
+            <h1>{title}</h1>
+            {questions.length !== 0 && <span>{questions.length} pergunta(s)</span>}
+            <AiOutlineShareAlt 
+              className='icon share-icon'
+              title='Compartilhar sala'
+              onClick={copyUrlRoomToClipboard}
+              />      
+          </div>
+          {closedAt === true && (
+            <div className='div-ended'>
+              <span>
+                Sala encerrada dia:
+              </span>
+              <span>{closeDate}</span>
+            </div>
+          )} 
+        </div> 
+        <p className='description'>Descrição: {description}</p>   
         <form onSubmit={handleSendQuestion}>
           <textarea 
-          placeholder='O que você quer perguntar?'
-          value={newQuestion}
-          onChange={event => setNewQuestion(event.target.value)}
+            placeholder='O que você quer perguntar?'
+            value={newQuestion}
+            onChange={event => setNewQuestion(event.target.value)}
+            disabled={closedAt}
           />
           <div className='form-footer'>
             {user ? (
@@ -99,28 +147,32 @@ export default function Room(){
                 <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
               )
             }
-            <Button type='submit' disabled={!user}>Enviar pergunta</Button>
+            <Button type='submit' disabled={!user || closedAt}>Enviar pergunta</Button>
           </div>
         </form>
         <div className="question-list">
-          {questions.map(question => 
+          {questions.length === 0 && <EmptyQuestion/>}
+          {questions.slice(0).reverse().map(question => 
             { 
               return(
                 <Question
                   key={question.id}
                   content={question.content}
                   author={question.author}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
                 >
                   <button
-                    className={`like-button ${question.likeId ? 'liked' : ''}`}
+                    className={`icon-button ${question.likeId ? 'marked' : ''}`}
                     type='button'
                     aria-label='Marcar como gostei.'
                     onClick={()=> handleLikeQuestion(question.id, question.likeId)}
+                    disabled={closedAt || question.isAnswered}
                   >
                     {question.likeCount > 0 && <span>{question.likeCount}</span>}
                     {question.likeId ? 
-                      (<AiFillLike className='icon like-icon' />) :
-                      (<AiOutlineLike className='icon like-icon' />)
+                      (<AiFillLike className='icon' />) :
+                      (<AiOutlineLike className='icon' />)
                     }
                   </button>
                 </Question>

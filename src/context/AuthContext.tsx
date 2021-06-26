@@ -14,16 +14,22 @@ type UserProps = {
 
 type AuthProps = {
   user: UserProps | undefined;
+  modalIsOpen: boolean;
+  openAndCloseModal: () => void;
+
   signInWithGoogle: () => Promise<void>;
 }
-
-
 
 export const AuthContext = createContext({} as AuthProps);
 
 export function AuthContextProvider ({children}: Props){
   const [user, setUser]= useState<UserProps>();
+  const [modalIsOpen, setIsModalOpen] = useState(false);
 
+
+  function openAndCloseModal(){
+    setIsModalOpen(!modalIsOpen);
+  }
   async function signInWithGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -67,7 +73,7 @@ export function AuthContextProvider ({children}: Props){
   },[])
 
   return(
-    <AuthContext.Provider value={{user, signInWithGoogle}}>
+    <AuthContext.Provider value={{user, modalIsOpen, openAndCloseModal, signInWithGoogle}}>
       {children}
       <Toaster
         position="top-center"

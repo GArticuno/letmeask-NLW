@@ -33,6 +33,12 @@ body, input, button, textarea {
   height: 1.5rem;
 }
 
+button {
+  &:disabled {
+    cursor: default !important;
+  }
+}
+
 @media(max-width: 1400px){
   html {
     font-size: 93.75%;

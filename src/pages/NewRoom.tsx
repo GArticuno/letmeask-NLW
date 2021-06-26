@@ -14,21 +14,22 @@ export default function NewRoom(){
   const {user} = useAuth();
 
   const [newRoom, setNewRoom] = useState('');
+  const [description, setDescription] = useState('');
   
   const history = useHistory();
 
   const handleCreateRoom = async (event: FormEvent) => {
     event.preventDefault();
 
-    if(newRoom.trim() === ''){
+    if(newRoom.trim() === '' || description.trim() === ''){
       return;
     }
 
     const roomRef = database.ref('rooms');
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const firebaseRoom = await roomRef.push({
       title: newRoom,
+      description: description,
       authorId: user?.id,
     })
 
@@ -40,7 +41,7 @@ export default function NewRoom(){
       <aside>
         <img src={illustration} alt="Ilustração" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
-        <p>Tire suas dúvidas da sua audiência em tempo-real</p>
+        <p>Tire suas dúvidas em tempo-real</p>
       </aside>
       <main>
         <div className='main-content'>
@@ -52,6 +53,11 @@ export default function NewRoom(){
               placeholder='Nome da sala'
               onChange={event => setNewRoom(event.target.value)}
               value={newRoom}
+            />
+            <textarea
+              placeholder='Descreva o objetivo da sala'
+              value={description}
+              onChange={event => setDescription(event.target.value)}
             />
             <Button type='submit'>
               Criar sala

@@ -8,8 +8,8 @@ type FirebaseQuestions = Record<string, {
     avatar: string
   },
   content: string,
-  isAnswered: string,
-  isHighlighted: string,
+  isAnswered: boolean,
+  isHighlighted: boolean,
   likes: Record<string, {
     authorId: string
   }>
@@ -22,8 +22,8 @@ type QuestionProps = {
     avatar: string
   },
   content: string,
-  isAnswered: string,
-  isHighlighted: string,
+  isAnswered: boolean,
+  isHighlighted: boolean,
   likeCount: number,
   likeId: string | undefined
 }
@@ -32,15 +32,19 @@ export function useRoom(roomId: string) {
   const { user } = useAuth();
   const [questions, setQuestions] = useState<QuestionProps[]>([]);
   const [title, setTitle] = useState('');
+  const [closedAt, setClosedAt] = useState(false);
+  const [closeDate, setCloseDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [authorId, setAuthorId] = useState('');
 
   useEffect(()=>{
     const roomRef = database.ref(`rooms/${roomId}`);
-    
+
     roomRef.on('value', room =>{
       const databaseRoom = room.val();
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions;
       
-      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
+      const parsedQuestions = Object.entries(firebaseQuestions ?? {}).map(([key, value]) => {
         return {
           id: key,
           content: value.content,
@@ -51,7 +55,12 @@ export function useRoom(roomId: string) {
           likeId: Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id)?.[0],
         }
       })
+
+      setClosedAt(databaseRoom.closedAt ? true : false);
+      setCloseDate(databaseRoom.closedAt ?? '');
+      setAuthorId(databaseRoom.authorId);
       setTitle(databaseRoom.title);
+      setDescription(databaseRoom.description);
       setQuestions(parsedQuestions);
     })
 
@@ -60,5 +69,5 @@ export function useRoom(roomId: string) {
     }
   },[roomId, user?.id]);
 
-  return { questions, title };
+  return { closedAt, closeDate, questions, title, authorId, description };
 }

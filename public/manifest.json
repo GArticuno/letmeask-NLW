@@ -1,0 +1,38 @@
+{
+  "name": "Letmeask",
+  "short_name": "Letmeask",
+  "icons": [
+    {
+      "src": "./icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-256x256.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-384x384.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./?homescreen=true",
+  "background_color": "#f02e3e",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#f02e3e",
+  "orientation": "portrait",
+  "description": "Aprenda e compartilhe conhecimento com outras pessoas.",
+  "splash_pages": null
+}

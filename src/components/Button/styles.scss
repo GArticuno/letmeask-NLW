@@ -19,13 +19,19 @@
     margin-right: 0.5rem;
   }
   
-  &:hover {
+  &:hover:not(:disabled) {
     filter: brightness(0.9);
   }
 
-  &.outlined {
+  &.outlined:not(:disabled) {
     background: #fff;
     border: 1px solid var(--primary);
     color: var(--primary);
+  }
+
+  &:disabled {
+    background: #bebebe;
+    color: #868686;
+    cursor: default;
   }
 }

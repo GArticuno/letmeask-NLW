@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import copy from '../../assets/images/copy.svg';
+import {FiCopy} from 'react-icons/fi';
 
 import './styles.scss';
 
@@ -14,9 +14,9 @@ export function RoomCode(props: Props) {
     toast.success('Código da sala copiado!')
   }
   return(
-    <button className='room-code' onClick={copyRoomToClipboard}>
+    <button className='room-code' onClick={copyRoomToClipboard} title='Copiar código da sala'>
       <div id='img-container'>
-        <img src={copy} alt="Copiar código" />
+        <FiCopy className='icon'/>
       </div>
       <span>Sala #{props.code}</span>
     </button>

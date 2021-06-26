@@ -7,7 +7,24 @@
   & + .question {
     margin-top: .5rem;
   }
-  
+
+  &.highlighted {
+    background: #fff7fe;
+    border: 1px solid var(--secondary);
+
+    footer .user-info span {
+      color: var(--text-default);
+    }
+  }
+
+  &.answered {
+    background: #dbdcdd;
+
+    footer button.icon-button.marked {
+      color: var(--gray) !important;
+    }
+  }
+
   p {
     color: var(--text-default);
   }
@@ -31,8 +48,14 @@
       span {
         margin-left: .5rem;
         color: var(--gray);
-        font-size: .875rem;
+        font-size: .9rem;
+        font-weight: 500;
       }
+    }
+
+    > div {
+      display: flex;
+      gap: 1rem;
     }
 
     button {
@@ -41,24 +64,19 @@
       cursor: pointer;
       gap: .5rem;
 
-      &.like-button, &.delete-button {
+      &.icon-button {
         display: flex;
         align-items: flex-end;
         color: var(--gray);
         gap: .5rem;
         transition: color 0.2s, filter 0.2s;
 
-        &.liked {
+        &:hover:not(:disabled), &.marked {
           color: var(--secondary);
         }
-
-        &.delete-button:hover {
-          color: var(--primary);
-        }
-
-        &:hover {
-          filter: brightness(0.8);
-        }
+      }
+      &:hover:not(:disabled) {
+        filter: brightness(0.8);
       }
     }
   }

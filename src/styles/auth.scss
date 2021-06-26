@@ -30,7 +30,7 @@
     }
 
     p {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       line-height: 2rem;
       margin-top: 1rem;
       color: #f8f8f8;
@@ -43,6 +43,7 @@
     padding: 0 2rem;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -72,10 +73,23 @@
           padding: 0 1rem;
           background: #fff;
           border: 1px solid var(--gray-line);
+          outline: none;
+        }
+
+        textarea {
+          width: 100%;
+          height: 150px; 
+          margin-top: .5rem;
+          border-radius: 8px;
+          padding: .5rem 1rem;
+          background: #fff;
+          border: 1px solid var(--gray-line);
+          outline: none;
+            
         }
 
         button {
-          margin-top:  1rem;
+          margin-top: 1rem;
 
           .login-icon {
             margin-right: .5rem;
@@ -157,4 +171,11 @@
     }
   }
 
+  .rooms-button {
+    margin-top: 2rem;
+
+    button {
+      background: linear-gradient(var(--primary), var(--secondary));
+    }
+  }
 }

@@ -8,6 +8,7 @@ import logo from '../assets/images/logo.svg';
 import googleIcon from '../assets/images/google-icon.svg';
 
 import { useAuth } from '../hooks/useAuth';
+import { useRoom } from '../hooks/useRoom';
 
 import { database } from '../services/firebase';
 
@@ -15,10 +16,11 @@ import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
 
+
 export default function Home(){
   const {user, signInWithGoogle} = useAuth();
-  
   const [roomCode, setRoomCode] = useState('');
+  const { closeDate } = useRoom(roomCode);
   
   const history = useHistory();
   
@@ -45,11 +47,14 @@ export default function Home(){
     }
 
     if(roomRef.val().closedAt){
-      toast.error('Sala já fechada.');
+      toast.error(`Esta sala foi fechada na data ${closeDate}`);
       return;
     }
-
     history.push(`/rooms/${roomCode}`);
+  }
+
+  function handleFindOpenRooms(){
+    history.push(`/rooms/open`);
   }
 
   return(
@@ -57,7 +62,7 @@ export default function Home(){
       <aside>
         <img src={illustration} alt="Ilustração" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
-        <p>Tire suas dúvidas da sua audiência em tempo-real</p>
+        <p>Tire suas dúvidas sobre qualquer assunto em tempo-real</p>
       </aside>
       <main>
         <div className='main-content'>
@@ -81,6 +86,11 @@ export default function Home(){
               Entrar na sala
             </Button>
           </form>
+        </div>
+        <div className='rooms-button'>
+          <Button type='button' onClick={handleFindOpenRooms}>
+            Salas Abertas
+         </Button>          
         </div>
       </main>
     </div>
