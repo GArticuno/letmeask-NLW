@@ -8,7 +8,6 @@ import logo from '../assets/images/logo.svg';
 import googleIcon from '../assets/images/google-icon.svg';
 
 import { useAuth } from '../hooks/useAuth';
-import { useRoom } from '../hooks/useRoom';
 
 import { database } from '../services/firebase';
 
@@ -20,7 +19,6 @@ import '../styles/auth.scss';
 export default function Home(){
   const {user, signInWithGoogle} = useAuth();
   const [roomCode, setRoomCode] = useState('');
-  const { closeDate } = useRoom(roomCode);
   
   const history = useHistory();
   
@@ -47,7 +45,7 @@ export default function Home(){
     }
 
     if(roomRef.val().closedAt){
-      toast.error(`Esta sala foi fechada na data ${closeDate}`);
+      toast.error(`Esta sala foi fechada na data ${roomRef.val().closedAt}`);
       return;
     }
     history.push(`/rooms/${roomCode}`);
@@ -85,12 +83,10 @@ export default function Home(){
               <FiLogIn className='icon login-icon'/>
               Entrar na sala
             </Button>
+            <Button type='button' onClick={handleFindOpenRooms}>
+              Salas Abertas
+            </Button>   
           </form>
-        </div>
-        <div className='rooms-button'>
-          <Button type='button' onClick={handleFindOpenRooms}>
-            Salas Abertas
-         </Button>          
         </div>
       </main>
     </div>

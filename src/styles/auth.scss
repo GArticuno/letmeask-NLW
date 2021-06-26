@@ -99,6 +99,11 @@
         input, button {
           width: 100%;
         }
+
+        button:last-child {
+          margin-top: 2rem;
+          background: linear-gradient(var(--primary), var(--secondary));
+        }
       }
 
       p {
@@ -168,14 +173,6 @@
       height: 1px;
       background:var(--gray-line);
       margin-left: 1rem;
-    }
-  }
-
-  .rooms-button {
-    margin-top: 2rem;
-
-    button {
-      background: linear-gradient(var(--primary), var(--secondary));
     }
   }
 }

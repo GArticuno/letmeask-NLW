@@ -10,6 +10,10 @@ Tire suas dúvidas sobre qualquer assunto em tempo-real
 
 ![](https://github.com/GArticuno/letmeask-NLW/blob/main/src/assets/backgrounds/NewRoom.png)
 
+## Open Rooms
+
+![](https://github.com/GArticuno/letmeask-NLW/blob/main/src/assets/backgrounds/OpenRooms.png)
+
 ## Room
 
 ![](https://github.com/GArticuno/letmeask-NLW/blob/main/src/assets/backgrounds/Room.png)
