@@ -35,3 +35,10 @@
     cursor: default;
   }
 }
+
+@media(max-width: 500px){
+  .button {
+    height: 30px;
+    padding: 0 1rem;
+  }
+}

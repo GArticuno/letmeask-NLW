@@ -176,3 +176,11 @@
     }
   }
 }
+
+@media(max-width:720px){
+  #page-auth {
+    aside {
+      display: none;
+    }
+  }
+}

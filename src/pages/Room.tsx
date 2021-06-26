@@ -28,7 +28,7 @@ export default function Room(){
   const history = useHistory();
   const [newQuestion, setNewQuestion] = useState('');
 
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   const { 
     closedAt, 
     questions, 
@@ -144,7 +144,7 @@ export default function Room(){
               </div>
               ):
               (
-                <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+                <span>Para enviar uma pergunta, <button onClick={signInWithGoogle}>faça seu login</button>.</span>
               )
             }
             <Button type='submit' disabled={!user || closedAt}>Enviar pergunta</Button>
