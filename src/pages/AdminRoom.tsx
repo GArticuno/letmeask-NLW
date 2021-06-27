@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { AiOutlineDelete, AiOutlineCheckCircle } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineCheckCircle, AiFillCheckCircle } from 'react-icons/ai';
 import { BiMessageDetail } from 'react-icons/bi';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -14,7 +14,7 @@ import { database } from '../services/firebase';
 
 import { Button } from '../components/Button';
 import { EmptyQuestion } from '../components/EmptyQuestion';
-import { ModalRoom } from '../components/Modal';
+import { ModalAnswered, ModalRoom } from '../components/Modal';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
 
@@ -25,13 +25,14 @@ type RoomParams = {
 }
 
 export default function AdminRoom(){
-  const { openAndCloseModal } = useAuth();
+  const { openAndCloseModal, openAndCloseModalAnswer } = useAuth();
   const params = useParams<RoomParams>();
   const roomId = params.id;
   const { questions, title, closedAt, closeDate } = useRoom(roomId);
 
   const [modalName, setModalName] = useState('');
   const [questionId, setQuestionId] = useState('');
+  const [questionContent, setQuestionContent] = useState('');
  
   async function handleCloseRoom() {
     await database.ref(`rooms/${roomId}`).update({
@@ -42,10 +43,10 @@ export default function AdminRoom(){
     openAndCloseModal();
   }
 
-  async function handleCheckQuestionAnswered(questionId: string) {
-    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
-      isAnswered: true
-    })   
+  async function openModalAnswer(questionId: string, questionContent: string) {
+    setQuestionId(questionId);
+    setQuestionContent(questionContent)
+    openAndCloseModalAnswer();
   }
 
   async function handleHighlightQuestion(questionId: string) {
@@ -101,17 +102,18 @@ export default function AdminRoom(){
                   key={question.id}
                   content={question.content}
                   author={question.author}
+                  answer={question?.answer}
                   isAnswered={question.isAnswered}
                   isHighlighted={question.isHighlighted}
                 >
-                  {!question.isAnswered && (
+                  {!question.isAnswered ? (
                     <>
                       <button
                         className={'icon-button'}
                         type='button'
                         aria-label='Marcar pergunta como respondida'
                         title='Marcar como respondida'
-                        onClick={() => handleCheckQuestionAnswered(question.id)}
+                        onClick={() => openModalAnswer(question.id, question.content)}
                         disabled={closedAt}
                       >
                         <AiOutlineCheckCircle className='icon'/>
@@ -127,7 +129,7 @@ export default function AdminRoom(){
                         <BiMessageDetail className='icon'/>
                       </button>
                     </>
-                  )}
+                  ):( <AiFillCheckCircle className='icon answered-icon' title={'Pergunta respondida'}/>)}
                   <button
                     className={'icon-button'}
                     type='button'
@@ -150,6 +152,11 @@ export default function AdminRoom(){
         handleCloseRoom={handleCloseRoom}
         roomId={roomId}
         questionId={questionId}
+      />
+      <ModalAnswered 
+        roomId={roomId}
+        questionId={questionId}
+        questionContent={questionContent}
       />
     </div>
   )

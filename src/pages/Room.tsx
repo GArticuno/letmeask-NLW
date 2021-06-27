@@ -159,6 +159,7 @@ export default function Room(){
                   key={question.id}
                   content={question.content}
                   author={question.author}
+                  answer={question?.answer}
                   isAnswered={question.isAnswered}
                   isHighlighted={question.isHighlighted}
                 >

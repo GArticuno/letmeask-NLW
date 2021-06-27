@@ -1,13 +1,19 @@
+import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
 import { CgCloseO } from 'react-icons/cg';
 import { AiOutlineDelete } from 'react-icons/ai';
+import toast from 'react-hot-toast';
+
+import { useAuth } from '../../hooks/useAuth';
 
 import { database } from '../../services/firebase';
 
 import { Button } from "../Button";
 
 import './styles.scss';
-import { useAuth } from '../../hooks/useAuth';
+
+
+
 
 type Props = {
   modalName: string;
@@ -15,6 +21,12 @@ type Props = {
   questionId: string;
   handleCloseRoom: () => void;
 };
+
+type AnswerProps = {
+  roomId: string;
+  questionId: string;
+  questionContent: string;
+}
 
 const Style = {
   content: {
@@ -25,7 +37,7 @@ const Style = {
     right: 'auto',
     bottom: 'auto',
 
-    padding: '5rem',
+    padding: '3rem',
     marginRight: '-50%',
     
     transform: 'translate(-50%, -50%)',
@@ -74,6 +86,47 @@ export function ModalRoom(props: Props) {
         </div>
       )}
 
+    </Modal>
+  )
+}
+
+export function ModalAnswered(props: AnswerProps) {
+  const { isModalAnswerIsOpen, openAndCloseModalAnswer} = useAuth();
+  const [answer, setAnswer] = useState('');
+
+  async function submitAnswerQuestion(event: FormEvent) {
+    event.preventDefault();
+
+    if(answer.trim() === ''){
+      return;
+    }
+    await database.ref(`rooms/${props.roomId}/questions/${props.questionId}`).update({
+      isAnswered: true,
+      answer: answer
+    })  
+    openAndCloseModalAnswer()
+    toast.success('Resposta enviada')
+  }
+
+  return(
+    <Modal
+      isOpen={isModalAnswerIsOpen}
+      style={Style}
+    >
+      <div className='modal answer'>
+        <h1>Pergunta</h1>
+        <p>{props.questionContent}</p>
+        <form onSubmit={submitAnswerQuestion}>  
+          <textarea
+            value={answer}
+            onChange={event => setAnswer(event.target.value)}
+          />
+          <div>
+            <Button id='cancel-button' onClick={openAndCloseModalAnswer}> Cancelar </Button>
+            <Button id='agree-button' type='submit'> Enviar resposta</Button>
+          </div>
+        </form>
+      </div>
     </Modal>
   )
 }

@@ -8,6 +8,7 @@ type FirebaseQuestions = Record<string, {
     avatar: string
   },
   content: string,
+  answer: string,
   isAnswered: boolean,
   isHighlighted: boolean,
   likes: Record<string, {
@@ -15,13 +16,14 @@ type FirebaseQuestions = Record<string, {
   }>
 }>
 
-type QuestionProps = {
+export type QuestionProps = {
   id: string,
   author: {
     name: string,
     avatar: string
   },
   content: string,
+  answer: string | undefined,
   isAnswered: boolean,
   isHighlighted: boolean,
   likeCount: number,
@@ -49,6 +51,7 @@ export function useRoom(roomId: string) {
           id: key,
           content: value.content,
           author: value.author,
+          answer: value.answer,
           isAnswered: value.isAnswered,
           isHighlighted: value.isHighlighted,
           likeCount: Object.values(value.likes ?? {}).length,

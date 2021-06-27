@@ -18,10 +18,15 @@
   }
 
   &.answered {
-    background: #dbdcdd;
+    background: #e4ffdd;
+    border: 1px solid #2bc72b;
 
     footer button.icon-button.marked {
       color: var(--gray) !important;
+    }
+
+    .answered-icon {
+      color: #2bc72b;
     }
   }
 
@@ -79,5 +84,30 @@
         filter: brightness(0.8);
       }
     }
+  }
+}
+
+.question-answered {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  .content {
+    margin: 1rem 0;
+    background: #e4ffdd;
+    border: 1px solid #2bc72b;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    padding: 1.5rem;
+    width: 90%;
+    height: 80%;
+  }
+
+  .icon {
+    color: var(--gray-light);
+    height: 2.7rem;
+    width: 2.7rem;
+    margin-right: 2rem; 
   }
 }
