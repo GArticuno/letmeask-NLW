@@ -11,3 +11,13 @@ export function EmptyQuestion() {
     </div>
   )
 }
+
+export function NotRooms() {
+  return(
+    <div id='empty-questions'>
+      <img src={emptyQuestions} alt="Sem perguntas" />
+      <h2>Nenhuma sala por aqui...</h2>
+      <span>Crie uma sala e envie o dela código para seus amigos e comece a responder perguntas!</span>
+    </div>
+  )
+}

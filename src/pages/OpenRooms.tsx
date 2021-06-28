@@ -6,6 +6,7 @@ import logo from '../assets/images/logo.svg';
 import { database } from "../services/firebase";
 
 import { Button } from "../components/Button";
+import { NotRooms } from "../components/EmptyQuestion";
 
 import '../styles/room.scss';
 
@@ -66,6 +67,7 @@ export default function OpenRooms(){
       <main className='content rooms'>
         <h1>Salas Abertas</h1>
         <div className='room-list'>
+          {rooms.length === 0 && <NotRooms/>}
           {rooms.map(room => {
             return (
               <Button key={room.id} onClick={()=> handleJoinRoom(room.id)}>
