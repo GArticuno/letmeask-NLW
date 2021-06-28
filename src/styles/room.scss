@@ -92,6 +92,11 @@
           color: var(--text);
           font-weight: 500;
           font-size: .9rem;
+          cursor: pointer;
+
+          &.answered-span {
+            background: linear-gradient(#0a8b2a, var(--tertiary));
+          }
         }
         
         .share-icon {
@@ -125,6 +130,7 @@
     .description {
       font-family: 'Poppins', sans-serif;
       font-size: 1.1rem;
+      margin-left: 0.5rem;
       margin-bottom: 1rem;
       max-width: 800px;
     }
@@ -195,14 +201,41 @@
   }
 }
 
-@media(max-width:330px) {
-  #page-room {
-    main {
-      margin: 0 1rem;
-      .room-title {
-        > div:first-child {
-          gap:.1rem;
+@media(max-width: 800px) {
+  .room-title {
+    flex-direction: column;
+    justify-content: center;
+
+    .div-ended {
+      margin-top: 1rem;
+    }
+  }
+}
+
+@media(max-width:440px) {
+  main {
+    margin: 0;
+    .room-title {
+
+
+      > div:first-child {
+        flex-direction: column;
+        justify-content: center;
+        
+        span {
+          margin: 0;
         }
+      }
+    }
+  }
+}
+
+@media(max-width:330px) {
+  main {
+    margin: 0 1rem;
+    .room-title {
+      > div:first-child {
+        gap:.1rem;
       }
     }
   }

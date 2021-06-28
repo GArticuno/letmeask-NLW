@@ -32,6 +32,9 @@
 
 @media(max-width: 605px){
   .room-code {
+    #img-container {
+      padding: 0 0.5rem;
+    }
     span {
       display: none;
     }

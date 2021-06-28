@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import logo from '../assets/images/logo.svg';
 
 import { useAuth } from '../hooks/useAuth';
-import { useRoom } from '../hooks/useRoom';
+import { QuestionProps, useRoom } from '../hooks/useRoom';
 
 import { database } from '../services/firebase';
 
@@ -27,6 +27,7 @@ export default function Room(){
   const roomId = params.id;  
   const history = useHistory();
   const [newQuestion, setNewQuestion] = useState('');
+  const [isShowAnswer, setIsShowAnswer] = useState(false);
 
   const { user, signInWithGoogle } = useAuth();
   const { 
@@ -84,6 +85,18 @@ export default function Room(){
     navigator.clipboard.writeText(window.location.href);
     toast.success('URL da sala copiada!')
   }
+
+  function filterQuestions(question: QuestionProps) {
+    if(isShowAnswer) {
+      return question.isAnswered === true 
+    }else {
+      return question;
+    }
+  }
+
+  function filterQuestionsLabel(question: QuestionProps) {
+    return question.isAnswered === true
+  }
   
   return(
     <div id='page-room'>
@@ -112,14 +125,30 @@ export default function Room(){
         <div className='room-title'>
           <div>
             <h1>{title}</h1>
-            {questions.length !== 0 && <span>{questions.length} pergunta(s)</span>}
-            <AiOutlineShareAlt 
-              className='icon share-icon'
-              title='Compartilhar sala'
-              onClick={copyUrlRoomToClipboard}
-              />      
+            {questions.length !== 0 && (
+              <span 
+                onClick={() => setIsShowAnswer(false) }
+                title='Veja todas as perguntas'
+              >
+                {questions.length} pergunta(s)
+              </span>)}
+              {questions.length !== 0 && (
+              <span 
+                className='answered-span' 
+                onClick={() => setIsShowAnswer(true) }
+                title='Veja somente as perguntas respondidas'
+              >
+                {questions.filter(filterQuestionsLabel).length} respondida(s)
+              </span>)}
+            {!closedAt && 
+            (<AiOutlineShareAlt 
+                className='icon share-icon'
+                title='Compartilhar sala'
+                onClick={copyUrlRoomToClipboard}
+              /> 
+            )}     
           </div>
-          {closedAt === true && (
+          {closedAt && (
             <div className='div-ended'>
               <span>
                 Sala encerrada dia:
@@ -152,7 +181,7 @@ export default function Room(){
         </form>
         <div className="question-list">
           {questions.length === 0 && <EmptyQuestion/>}
-          {questions.slice(0).reverse().map(question => 
+          {questions.slice(0).reverse().filter(filterQuestions).map(question => 
             { 
               return(
                 <Question

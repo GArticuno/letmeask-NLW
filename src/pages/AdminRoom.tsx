@@ -8,7 +8,7 @@ import { ptBR } from 'date-fns/locale';
 import logo from '../assets/images/logo.svg';
 
 import { useAuth } from '../hooks/useAuth';
-import { useRoom } from '../hooks/useRoom';
+import { QuestionProps, useRoom } from '../hooks/useRoom';
 
 import { database } from '../services/firebase';
 
@@ -28,11 +28,13 @@ export default function AdminRoom(){
   const { openAndCloseModal, openAndCloseModalAnswer } = useAuth();
   const params = useParams<RoomParams>();
   const roomId = params.id;
-  const { questions, title, closedAt, closeDate } = useRoom(roomId);
+  const { questions, title, closedAt, closeDate, description } = useRoom(roomId);
 
   const [modalName, setModalName] = useState('');
   const [questionId, setQuestionId] = useState('');
   const [questionContent, setQuestionContent] = useState('');
+  const [isShowAnswer, setIsShowAnswer] = useState(false);
+
  
   async function handleCloseRoom() {
     await database.ref(`rooms/${roomId}`).update({
@@ -61,6 +63,18 @@ export default function AdminRoom(){
     openAndCloseModal();
   }
 
+  function filterQuestions(question: QuestionProps) {
+    if(isShowAnswer) {
+      return question.isAnswered === true 
+    }else {
+      return question;
+    }
+  }
+
+  function filterQuestionsLabel(question: QuestionProps) {
+    return question.isAnswered === true
+  }
+  
   return(
     <div id='page-room'>
       <header>
@@ -82,7 +96,21 @@ export default function AdminRoom(){
         <div className='room-title'>
           <div>
             <h1>{title}</h1>
-            {questions.length !== 0 && <span>{questions.length} pergunta(s)</span>}        
+            {questions.length !== 0 && (
+              <span 
+                onClick={() => setIsShowAnswer(false) }
+                title='Veja todas as perguntas'
+              >
+                {questions.length} pergunta(s)
+              </span>)}
+              {questions.length !== 0 && (
+              <span 
+                className='answered-span' 
+                onClick={() => setIsShowAnswer(true) }
+                title='Veja somente as perguntas respondidas'
+              >
+                {questions.filter(filterQuestionsLabel).length} respondida(s)
+              </span>)}       
           </div>
           {closedAt === true && (
             <div className='div-ended'>
@@ -92,10 +120,11 @@ export default function AdminRoom(){
               <span>{closeDate}</span>
             </div>
           )}
-        </div>    
+        </div>
+        <p className='description'>Descrição: {description}</p>       
         <div className="question-list">
           {questions.length === 0 && <EmptyQuestion/>}
-          {questions.slice(0).reverse().map(question => 
+          {questions.slice(0).reverse().filter(filterQuestions).map(question => 
             { 
               return(
                 <Question

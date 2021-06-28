@@ -33,6 +33,7 @@ export type QuestionProps = {
 export function useRoom(roomId: string) {
   const { user } = useAuth();
   const [questions, setQuestions] = useState<QuestionProps[]>([]);
+  const [questionsAnswered, setQuestionsAnswered] = useState<QuestionProps[]>([]);
   const [title, setTitle] = useState('');
   const [closedAt, setClosedAt] = useState(false);
   const [closeDate, setCloseDate] = useState('');
@@ -65,6 +66,7 @@ export function useRoom(roomId: string) {
       setTitle(databaseRoom.title);
       setDescription(databaseRoom.description);
       setQuestions(parsedQuestions);
+      setQuestionsAnswered(parsedQuestions)
     })
 
     return () => {
@@ -72,5 +74,5 @@ export function useRoom(roomId: string) {
     }
   },[roomId, user?.id]);
 
-  return { closedAt, closeDate, questions, title, authorId, description };
+  return { closedAt, closeDate, questions, questionsAnswered, title, authorId, description };
 }
