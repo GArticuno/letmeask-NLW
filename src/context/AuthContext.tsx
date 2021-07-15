@@ -6,6 +6,7 @@ import { firebase, auth } from '../services/firebase';
 type Props= {
   children: ReactNode
 }
+
 type UserProps = {
   id: string;
   name: string;
