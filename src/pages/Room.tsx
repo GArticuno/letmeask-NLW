@@ -109,7 +109,7 @@ export default function Room(){
             {user?.id === authorId && (
               <button 
                 className='admin-button'
-                aria-label='Sala do Admin'
+                aria-label='Sala de administração'
                 title='Sala de administração'
                 onClick={pushToAdminRoom}
               >
