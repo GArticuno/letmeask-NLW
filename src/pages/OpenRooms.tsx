@@ -48,7 +48,7 @@ export default function OpenRooms(){
       })
       setRooms(parsedRooms.filter(closedCheck))
     }).catch((error) => {
-      console.error(error);
+      console.error('Alguma coisa deu errado ', error);
     })
     
   },[])
